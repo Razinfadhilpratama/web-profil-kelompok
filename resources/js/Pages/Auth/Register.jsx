@@ -1,9 +1,5 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import React from 'react';
+import { Head, useForm, Link } from '@inertiajs/react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -15,106 +11,84 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
 
     return (
-        <GuestLayout>
-            <Head title="Register" />
+        <>
+            <Head title="TiluOpat — Buat Akun" />
+            <div className="min-h-screen bg-[#F5F3EF] flex items-center justify-center relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif] px-4">
+                <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#DDD6FE] rounded-full blur-3xl opacity-50 -z-10"></div>
+                <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-[#FCE7F3] rounded-full blur-3xl opacity-50 -z-10"></div>
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                <div className="w-full max-w-md bg-[#F8FAFF]/80 backdrop-blur-xl p-8 rounded-3xl shadow-xl border border-[#E8E9F4] relative z-10">
+                    <div className="flex justify-center mb-4">
+                        <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-sm border border-[#E8E9F4] text-xl">🌸</div>
+                    </div>
+                    <div className="text-center mb-8">
+                        <h1 className="text-2xl font-extrabold text-[#252943] mb-1">Buat Akun</h1>
+                        <p className="text-xs text-[#626477]">Daftar untuk mengelola website tim Anda.</p>
+                    </div>
 
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
+                    <form onSubmit={submit} className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-bold text-[#252943] mb-1">Nama Lengkap</label>
+                            <input
+                                type="text"
+                                value={data.name}
+                                onChange={(e) => setData('name', e.target.value)}
+                                placeholder="e.g. John Doe"
+                                className="w-full px-4 py-3 rounded-xl bg-white border border-[#E8E9F4] text-xs text-[#252943] focus:ring-2 focus:ring-[#7778E8] shadow-sm"
+                                required
+                            />
+                            {errors.name && <span className="text-[10px] text-red-500 mt-1 block">{errors.name}</span>}
+                        </div>
 
-                    <InputError message={errors.name} className="mt-2" />
+                        <div>
+                            <label className="block text-xs font-bold text-[#252943] mb-1">Email</label>
+                            <input
+                                type="email"
+                                value={data.email}
+                                onChange={(e) => setData('email', e.target.value)}
+                                placeholder="user@example.com"
+                                className="w-full px-4 py-3 rounded-xl bg-white border border-[#E8E9F4] text-xs text-[#252943] focus:ring-2 focus:ring-[#7778E8] shadow-sm"
+                                required
+                            />
+                            {errors.email && <span className="text-[10px] text-red-500 mt-1 block">{errors.email}</span>}
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-bold text-[#252943] mb-1">Buat Kata Sandi</label>
+                            <input
+                                type="password"
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
+                                placeholder="••••••••••••"
+                                className="w-full px-4 py-3 rounded-xl bg-white border border-[#E8E9F4] text-xs text-[#252943] focus:ring-2 focus:ring-[#7778E8] shadow-sm"
+                                required
+                            />
+                            {errors.password && <span className="text-[10px] text-red-500 mt-1 block">{errors.password}</span>}
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="w-full py-3.5 rounded-xl bg-[#252943] text-white text-xs font-bold shadow-md hover:bg-[#7778E8] transition flex items-center justify-center mt-2"
+                        >
+                            Buat Akun
+                        </button>
+
+                        <div className="text-center pt-2 text-xs text-[#626477] flex items-center justify-center space-x-1">
+                            <span>Sudah punya akun?</span>
+                            <Link href={route('login')} className="text-[#7778E8] font-bold hover:underline">
+                                Masuk
+                            </Link>
+                        </div>
+                    </form>
                 </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
-
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                        required
-                    />
-
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+            </div>
+        </>
     );
 }
